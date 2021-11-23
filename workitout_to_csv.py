@@ -3,6 +3,7 @@
 import requests
 import csv
 import json
+from datetime import datetime
 
 with open('mycreds.json') as credsfile:
     creds = json.load(credsfile)
@@ -29,9 +30,25 @@ headers = {
 
 response = requests.get(creds["url"], headers=headers, cookies=cookies)
 
+
+to_keys = {
+    "StammNr": "StammNr",
+    "PreName": "FirstName",
+    "Name": "LastName",
+    "Zimmernummer": "RoomNr",
+    "BlockedTill": "BlockedTill"
+        }
 d = list(response.json())
-keys = d[0].keys()
+d = [{v: e[k] for k, v in to_keys.items()} for e in d]
+
+for e in d:
+    e["BlockedTill"], _ = e["BlockedTill"].split()
+    if e["BlockedTill"] == "0000-00-00":
+        e["BlockedTill"] = ""
+    else:
+        e["BlockedTill"] = datetime.strptime(e["BlockedTill"], "%Y-%m-%d").strftime("%d.%m.%Y")
+
 with open("workitout_list.csv", "w") as outfile:
-    dict_writer = csv.DictWriter(outfile, keys)
+    dict_writer = csv.DictWriter(outfile, to_keys.values())
     dict_writer.writeheader()
     dict_writer.writerows(d)

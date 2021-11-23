@@ -12,7 +12,7 @@ class GoogleSheet:
     # If modifying these scopes, delete the file token.json.
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
     FULL_RANGE = 'students!A:H' 
-    KEYS = ["StammNr", "PreName", "Name", "Zimmernummer", "BlockedTill", "from", "to", "comment"]
+    KEYS = ["StammNr", "FirstName", "LastName", "RoomNr", "BlockedTill", "From", "To", "Comment"]
 
     def __init__(self):
         with open('mycreds.json') as credsfile:
@@ -25,11 +25,11 @@ class GoogleSheet:
     
     def getStudents(self):
         students = {}
-        rows = self._getSheet()
+        rows = self._getSheet()[1:]
         
-        for rowID, row in enumerate(rows, 1):
+        for rowID, row in enumerate(rows, 2):
             student = {k: "" for k in self.KEYS}
-            student["rowID"] = rowID
+            student["RowID"] = rowID
             for k, v in zip(self.KEYS, row):
                 student[k] = v
             

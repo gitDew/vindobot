@@ -1,5 +1,5 @@
-import json
 import requests
+from credentials import MyCredentials
 
 class WorkitoutFetcher:
     TO_KEYS = {
@@ -11,8 +11,7 @@ class WorkitoutFetcher:
             }
 
     def __init__(self):
-        with open("mycreds.json") as mycredsfile:
-            self.creds = json.load(mycredsfile)
+        self.creds = MyCredentials.load_from_file()
 
     def fetch(self):
         r = requests.get(self.creds["url"])

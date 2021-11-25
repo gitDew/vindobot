@@ -2,11 +2,10 @@
 
 import requests
 import csv
-import json
 from datetime import datetime
+from credentials import MyCredentials
 
-with open('mycreds.json') as credsfile:
-    creds = json.load(credsfile)
+creds = MyCredentials.load_from_file()
 
 cookies = {
     'PHPSESSID': creds["cookie"],

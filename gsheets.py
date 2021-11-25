@@ -6,7 +6,7 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
-import json
+from credentials import MyCredentials
 
 class GoogleSheet:
     # If modifying these scopes, delete the file token.json.
@@ -15,9 +15,8 @@ class GoogleSheet:
     KEYS = ["StammNr", "FirstName", "LastName", "RoomNr", "BlockedTill", "From", "To", "Comment"]
 
     def __init__(self):
-        with open('mycreds.json') as credsfile:
-            mycreds = json.load(credsfile)
-            self.SPREADSHEET_ID = mycreds["spreadsheetID"]
+        mycreds = MyCredentials.load_from_file()
+        self.SPREADSHEET_ID = mycreds["spreadsheetID"]
 
         creds = self.authenticate()
         service = build('sheets', 'v4', credentials=creds) 

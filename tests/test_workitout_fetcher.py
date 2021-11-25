@@ -1,13 +1,16 @@
 import pytest
 import responses
 import requests
-import json
-from workitout_fetcher import WorkitoutFetcher
 
-with open("mycreds.json") as mycredsfile:
-    creds = json.load(mycredsfile)
+from workitout_fetcher import WorkitoutFetcher
+from credentials import MyCredentials
 
 class TestWorkitoutFetcher:
+
+    @pytest.fixture
+    def creds(self):
+        return MyCredentials.load_from_file()
+
     @pytest.fixture
     def workitout_fetcher(self):
         return WorkitoutFetcher()
@@ -16,7 +19,7 @@ class TestWorkitoutFetcher:
         assert True
 
     @responses.activate
-    def test_status_code_200(self, workitout_fetcher):
+    def test_status_code_200(self, workitout_fetcher, creds):
         responses.add(responses.GET, creds["url"], status=200)
 
         resp = requests.get(creds["url"]) 
@@ -24,14 +27,14 @@ class TestWorkitoutFetcher:
         assert resp.status_code == 200
 
     @responses.activate
-    def test_given_timeout_then_exception_is_raised(self, workitout_fetcher):
+    def test_given_timeout_then_exception_is_raised(self, workitout_fetcher, creds):
         responses.add(responses.GET, creds["url"], body=requests.Timeout())
 
         with pytest.raises(requests.Timeout):
             workitout_fetcher.fetch()
 
     @responses.activate
-    def test_successful_fetch(self, workitout_fetcher):
+    def test_successful_fetch(self, workitout_fetcher, creds):
 
         student1 = {
                 "ID": "688",

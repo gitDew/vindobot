@@ -27,13 +27,6 @@ class TestWorkitoutFetcher:
         assert resp.status_code == 200
 
     @responses.activate
-    def test_given_timeout_then_exception_is_raised(self, workitout_fetcher, creds):
-        responses.add(responses.GET, creds["url"], body=requests.Timeout())
-
-        with pytest.raises(requests.Timeout):
-            workitout_fetcher.fetch()
-
-    @responses.activate
     def test_successful_fetch(self, workitout_fetcher, creds):
 
         student1 = {
@@ -80,10 +73,11 @@ class TestWorkitoutFetcher:
                 "HausName": "...",
                 "HausNameShort": "..."
                 }
-        responses.add(responses.GET, creds["url"],
+        responses.add(responses.GET, creds["data_url"],
                 json=[student1, student2]) 
-
-        students = workitout_fetcher.fetch()
+        
+        cookies = {"PHPSESSID": "abcdefg"}
+        students = workitout_fetcher.fetch(cookies)
 
         assert students[1] == {"StammNr": "123460", "FirstName": "Jane", "LastName": "Marrone", "RoomNr": "120", "BlockedTill": "0000-00-00 00:00:00"}
         assert {"StammNr", "FirstName", "LastName", "RoomNr", "BlockedTill"} == set(students[0].keys())

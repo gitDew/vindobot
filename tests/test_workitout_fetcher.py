@@ -6,29 +6,13 @@ from workitout_fetcher import WorkitoutFetcher
 from credentials import MyCredentials
 
 class TestWorkitoutFetcher:
-
     @pytest.fixture
-    def creds(self):
-        return MyCredentials.load_from_file()
-
-    @pytest.fixture
-    def workitout_fetcher(self):
-        return WorkitoutFetcher()
-
-    def test_it_compiles(self, workitout_fetcher):
-        assert True
+    def valid_workitout_fetcher(self):
+        cookies = {"PHPSESSID": "abcdefghi"}
+        return WorkitoutFetcher("https://www.workitoutserver.com/api/students", cookies)
 
     @responses.activate
-    def test_status_code_200(self, workitout_fetcher, creds):
-        responses.add(responses.GET, creds["url"], status=200)
-
-        resp = requests.get(creds["url"]) 
-
-        assert resp.status_code == 200
-
-    @responses.activate
-    def test_successful_fetch(self, workitout_fetcher, creds):
-
+    def test_successful_fetch(self, valid_workitout_fetcher):
         student1 = {
                 "ID": "688",
                 "PreName": "John",
@@ -51,6 +35,7 @@ class TestWorkitoutFetcher:
                 "HausName": "...",
                 "HausNameShort": "..."
                 }
+
         student2 = {
                 "ID": "689",
                 "PreName": "Jane",
@@ -73,12 +58,12 @@ class TestWorkitoutFetcher:
                 "HausName": "...",
                 "HausNameShort": "..."
                 }
-        responses.add(responses.GET, creds["data_url"],
+        responses.add(responses.GET, "https://www.workitoutserver.com/api/students",
                 json=[student1, student2]) 
         
-        cookies = {"PHPSESSID": "abcdefg"}
-        students = workitout_fetcher.fetch(cookies)
+        students = valid_workitout_fetcher.fetch()
 
+        assert students[0] == {"StammNr": "123456", "FirstName": "John", "LastName": "Doe", "RoomNr": "999", "BlockedTill": "2021-12-31 00:00:00"}
         assert students[1] == {"StammNr": "123460", "FirstName": "Jane", "LastName": "Marrone", "RoomNr": "120", "BlockedTill": "0000-00-00 00:00:00"}
         assert {"StammNr", "FirstName", "LastName", "RoomNr", "BlockedTill"} == set(students[0].keys())
         

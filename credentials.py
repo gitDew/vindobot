@@ -1,8 +1,14 @@
 import json
 
 class MyCredentials:
-    creds = None
-    def load_from_file():
+    def __init__(self):
+        self.credentials = None
+
+    def _load_from_file(self):
         with open("mycreds.json") as credsfile:
-            MyCredentials.creds = json.load(credsfile)
-        return MyCredentials.creds
+            return json.load(credsfile)
+    
+    def get_credentials(self):
+        if not self.credentials:
+            self.credentials = self._load_from_file()
+        return self.credentials

@@ -25,32 +25,33 @@ def writer(request_factory):
     return google_sheets.Writer(request_factory)
 
 def test_fetching(reader):
-    values = reader.fetch("A1:AH")
+    values = reader.read("A1:AH")
     assert len(values) > 0, "Fetched list should not be empty"
     assert "StammNr" in values[0], "First row should include StammNr"
 
 def test_writing(writer, reader):
     writer.updateRow(300, ["Hello", "from", "the", "integration", "tests"])
-    values = reader.fetch("A300:F300")[0]
+    values = reader.read("A300:F300")[0]
 
     assert " ".join(values) == "Hello from the integration tests"
 
     writer.updateRow(300, ["Goodbye"])
-    values = reader.fetch("A300:F300")[0]
+    values = reader.read("A300:F300")[0]
 
     assert " ".join(values) == "Goodbye from the integration tests"
 
     writer.updateRow(301, [10, 5, "=A301+B301"])
-    values = reader.fetch("A301:C301")[0]
+    values = reader.read("A301:C301")[0]
     assert int(values[2]) == 15
 
     writer.updateRow(301, [20])
-    values = reader.fetch("A301:C301")[0]
+    values = reader.read("A301:C301")[0]
     assert int(values[2]) == 25
 
-
-    
-
-
-
-
+def test_append_and_clear(reader, writer):
+    writer.appendRow(["this", "was", "appended"])
+    values = reader.read("A197:C197")[0]    # Test sheet has a table from 1 to 196
+    assert " ".join(values) == "this was appended"
+    writer.clear("A197:C197")
+    values = reader.read("A197:C197")
+    assert len(values) == 0, "Appended row should have been cleared"

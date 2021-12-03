@@ -40,6 +40,10 @@ class RequestFactory:
         return self.sheet_values_obj.update(spreadsheetId=self.spreadsheet_ID,\
                 range=range, valueInputOption="USER_ENTERED", body=body)
 
+    def build_clear_request(self, range):
+        return self.sheet_values_obj.clear(spreadsheetId=self.spreadsheet_ID, \
+                range=range)
+
     def build_append_request(self, range, body):
         return self.sheet_values_obj.append(spreadsheetId=self.spreadsheet_ID,\
                 range=range, insertDataOption="INSERT_ROWS",\
@@ -54,7 +58,7 @@ class Reader:
 
     def getAllRows(self):
         rows = [] 
-        values = self.fetch(self.FULL_RANGE)[1:]
+        values = self.read(self.FULL_RANGE)[1:]
         
         for rowID, value in enumerate(values, 2):
             row = {k: "" for k in self.KEYS}
@@ -66,7 +70,7 @@ class Reader:
 
         return rows 
 
-    def fetch(self, range):
+    def read(self, range):
         request = self.request_factory.build_get_request(range)
         result = request.execute()
         return result.get('values', [])
@@ -86,6 +90,11 @@ class Writer:
         request = self.request_factory.build_update_request(range, body)
         result = request.execute()
         print('{0} cells updated.'.format(result.get('updatedCells')))
+    
+    def clear(self, range):
+        request = self.request_factory.build_clear_request(range)
+        result = request.execute()
+        print(f"{range} cleared.")
 
     def appendRow(self, values):
         body = {

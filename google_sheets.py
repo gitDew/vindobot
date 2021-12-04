@@ -56,19 +56,19 @@ class Reader:
     def __init__(self, request_factory):
         self.request_factory = request_factory
 
-    def getAllRows(self):
-        rows = [] 
-        values = self.read(self.FULL_RANGE)[1:]
+    def getAllEntries(self):
+        entries = []
+        rows = self.read(self.FULL_RANGE)[1:]
         
-        for rowID, value in enumerate(values, 2):
-            row = {k: "" for k in self.KEYS}
-            row["RowID"] = rowID
-            for k, v in zip(self.KEYS, value):
-                row[k] = v
+        for rowID, row in enumerate(rows, 2):
+            entry = {k: "" for k in self.KEYS}
+            entry["RowID"] = rowID
+            for k, v in zip(self.KEYS, row):
+                entry[k] = v
             
-            rows.append(row) 
+            entries.append(entry)
 
-        return rows 
+        return entries
 
     def read(self, range):
         request = self.request_factory.build_get_request(range)

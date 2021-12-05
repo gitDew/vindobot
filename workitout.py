@@ -18,7 +18,14 @@ class Fetcher:
 
     def fetch(self):
         r = requests.get(self.url, cookies=self.cookies)
-        return [{v: e[k] for k, v in self.TO_KEYS.items()} for e in r.json()]
+        fetched = [{v: e[k] for k, v in self.TO_KEYS.items()} for e in r.json()]
+        return self._replace_zero_date_with_empty_string(fetched)
+
+    def _replace_zero_date_with_empty_string(self, fetched):
+        for student in fetched:
+            if student["BlockedTill"] == "0000-00-00 00:00:00":
+                student["BlockedTill"] = ""
+        return fetched
 
 class Authenticator:
     def __init__(self, url, selenium_driver):

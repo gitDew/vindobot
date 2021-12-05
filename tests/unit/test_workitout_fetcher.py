@@ -62,6 +62,6 @@ class TestWorkitoutFetcher:
         students = logged_in_workitout.fetch()
 
         assert students[0] == {"StammNr": "123456", "FirstName": "John", "LastName": "Doe", "RoomNr": "999", "BlockedTill": "2021-12-31 00:00:00"}
-        assert students[1] == {"StammNr": "123460", "FirstName": "Jane", "LastName": "Marrone", "RoomNr": "120", "BlockedTill": "0000-00-00 00:00:00"}
+        assert students[1] == {"StammNr": "123460", "FirstName": "Jane", "LastName": "Marrone", "RoomNr": "120", "BlockedTill": ""}
         assert {"StammNr", "FirstName", "LastName", "RoomNr", "BlockedTill"} == set(students[0].keys())
         

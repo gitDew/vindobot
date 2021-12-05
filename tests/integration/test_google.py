@@ -23,9 +23,9 @@ def test_update_and_clear(writer, reader):
 
     writer.updateRow(301, [20])
     values = reader.read("A301:C301")[0]
+    writer.clear("A300:F301")
     assert int(values[2]) == 25
 
-    writer.clear("A300:F301")
     values = reader.read("A300:F301")
     assert len(values) == 0, "Cells should be emptied"
 
@@ -33,8 +33,8 @@ def test_update_and_clear(writer, reader):
 def test_append_and_clear(reader, writer):
     writer.appendRow(["this", "was", "appended"])
     values = reader.read("A197:C197")[0]    # Test sheet has a table from 1 to 196
-    assert " ".join(values) == "this was appended"
     writer.clear("A197:C197")
+    assert " ".join(values) == "this was appended"
     values = reader.read("A197:C197")
     assert len(values) == 0, "Appended row should have been cleared"
 

@@ -31,3 +31,11 @@ class Updater:
             if any(student_changes):
                 changes.append({"RowID": entry["RowID"], "diff": student_changes})
         return changes, new
+    
+    def add(self, new):
+        for new_student in new:
+            self.google_writer.appendRow([new_student["StammNr"], new_student["FirstName"], new_student["LastName"], new_student["RoomNr"], new_student["BlockedTill"]])
+
+    def update(self, changes):
+        for change in changes:
+            self.google_writer.updateRow(change["RowID"], change["diff"])

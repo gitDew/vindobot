@@ -1,32 +1,7 @@
-from student import Student
 import pytest
 from unittest.mock import patch
 from datetime import date
-
-
-@pytest.fixture
-def paying_example_student():
-    student_entry = {"RowID": 9, "StammNr": "123456", "FirstName": "Martin", "LastName": "Scorsese", 
-            "RoomNr": "987", "BlockedTill": "", "From": "01.01.2021", "To": "01.04.2021", "Comment": "Shutter Island was great"}
-    return Student(student_entry)
-
-@pytest.fixture
-def blocked_example_student():
-    student_entry = {"RowID": 10, "StammNr": "123457", "FirstName": "Bad", "LastName": "Man", 
-            "RoomNr": "666", "BlockedTill": "01.12.2021", "From": "01.01.2021", "To": "01.02.2021", "Comment": ""}
-    return Student(student_entry)
-
-@pytest.fixture
-def expired_but_not_blocked_example_student():
-    student_entry = {"RowID": 11, "StammNr": "123458", "FirstName": "Sneaky", "LastName": "Man", 
-            "RoomNr": "667", "BlockedTill": "", "From": "01.01.2021", "To": "05.02.2021", "Comment": "Careful, this guy is sneaky"}
-    return Student(student_entry)
-
-@pytest.fixture
-def uncertain_example_student():
-    student_entry = {"RowID": 12, "StammNr": "123459", "FirstName": "Johnny", "LastName": "Uncertain", 
-            "RoomNr": "", "BlockedTill": "", "From": "", "To": "", "Comment": "?"}
-    return Student(student_entry)
+from student import Student
 
 def test_student_has_the_right_attributes(paying_example_student):
     assert paying_example_student.row_id == 9
@@ -54,7 +29,8 @@ def test_is_expired(expired_but_not_blocked_example_student, paying_example_stud
 
 def test_uncertain(uncertain_example_student):
     assert not uncertain_example_student.is_blocked(), "Empty BlockedTill should not be seen as blocked"
-    assert uncertain_example_student.is_expired(), "Empty to fields should be seen as expired"
+    assert not uncertain_example_student.is_expired(), "Empty to fields should not be seen as expired"
+    assert uncertain_example_student.is_uncertain(), "Empty to field should be seen as being uncertain"
 
 def test_given_invalid_blocked_throws_exception():
     student_entry = {"RowID": 12, "StammNr": "123459", "FirstName": "Joe", "LastName": "Rotten", 

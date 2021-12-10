@@ -27,9 +27,26 @@ class Student:
         else:
             self.paid_to = datetime.strptime(entry["To"], self.DATE_FORMAT).date()
 
+
+    def __str__(self):
+        def question_mark_if_empty(attr):
+            return attr if attr != "" else "?"
+
+        s = f"{self.stamm_nr}, {self.first_name}, {self.last_name}, Room {question_mark_if_empty(self.room_nr)}."
+        if self.paid_to != "":
+            s += f" Paid until {self.paid_to.strftime('%d.%m.%Y')}."
+        else:
+            s += " Paid until ?."
+        if self.comment != "":
+            s += f" Comment: {self.comment}"
+        return s + '\n'
+
     def is_blocked(self):
         return self.blocked_till != ""
 
     def is_expired(self):
-        return self.paid_to == "" or self.paid_to <= date.today()
+        return self.paid_to != "" and self.paid_to <= date.today()
+
+    def is_uncertain(self):
+        return self.paid_to == ""
 

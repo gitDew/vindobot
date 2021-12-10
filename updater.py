@@ -11,7 +11,7 @@ class Updater:
         new = []
 
         wi_students = self.workitout_fetcher.fetch()
-        g_entries = self.google_reader.getAllEntries()
+        g_entries = self.google_reader.get_all_entries()
         
         by_stamm_nr = {student["StammNr"]: student for student in g_entries} 
 
@@ -34,8 +34,8 @@ class Updater:
     
     def add(self, new):
         for new_student in new:
-            self.google_writer.appendRow([new_student["StammNr"], new_student["FirstName"], new_student["LastName"], new_student["RoomNr"], new_student["BlockedTill"]])
+            self.google_writer.append_row([new_student["StammNr"], new_student["FirstName"], new_student["LastName"], new_student["RoomNr"], new_student["BlockedTill"]])
 
     def update(self, changes):
         for change in changes:
-            self.google_writer.updateRow(change["RowID"], change["diff"])
+            self.google_writer.update_row(change["RowID"], change["diff"])

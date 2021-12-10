@@ -22,7 +22,7 @@ def test_diff_and_new():
     reader = MagicMock()
 
     fetcher.fetch.return_value = students
-    reader.getAllEntries.return_value = entries
+    reader.get_all_entries.return_value = entries
 
     updater = Updater(fetcher, reader, None) 
 
@@ -53,7 +53,7 @@ def test_diff():
     reader = MagicMock()
 
     fetcher.fetch.return_value = students
-    reader.getAllEntries.return_value = entries
+    reader.get_all_entries.return_value = entries
 
     updater = Updater(fetcher, reader, None) 
 

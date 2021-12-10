@@ -56,7 +56,7 @@ class Reader:
     def __init__(self, request_factory):
         self.request_factory = request_factory
 
-    def getAllEntries(self):
+    def get_all_entries(self):
         entries = []
         rows = self.read(self.FULL_RANGE)[1:]
         
@@ -81,7 +81,7 @@ class Writer:
     def __init__(self, request_factory):
         self.request_factory = request_factory 
         
-    def updateRow(self, rowID, values):
+    def update_row(self, rowID, values):
         body = {
             'values': [values] 
         }
@@ -96,7 +96,7 @@ class Writer:
         result = request.execute()
         print(f"{range} cleared.")
 
-    def appendRow(self, values):
+    def append_row(self, values):
         body = {
                 'values': [values]
                 }

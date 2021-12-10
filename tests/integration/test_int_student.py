@@ -5,7 +5,7 @@ import pytest
 
 @pytest.fixture(scope="module")
 def example_students(reader):
-    entries = reader.getAllEntries()
+    entries = reader.get_all_entries()
 
     students = []
     for entry in entries:

@@ -51,13 +51,15 @@ class RequestFactory:
 
 class Reader:
     KEYS = ["StammNr", "FirstName", "LastName", "RoomNr", "BlockedTill", "From", "To", "Comment"]
-    FULL_RANGE = 'students!A:H' 
+    FULL_RANGE = 'A:H' 
     
-    def __init__(self, request_factory):
+    def __init__(self, request_factory, sheet_name):
         self.request_factory = request_factory
+        self.sheet_name = sheet_name
 
     def get_all_entries(self):
         entries = []
+        range = f"'{self.sheet_name}'!{self.FULL_RANGE}"
         rows = self.read(self.FULL_RANGE)[1:]
         
         for rowID, row in enumerate(rows, 2):

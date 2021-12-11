@@ -17,7 +17,7 @@ def request_factory(sheet_values_obj):
 
 @pytest.fixture(scope="module")
 def reader(request_factory):
-    return google_sheets.Reader(request_factory)
+    return google_sheets.Reader(request_factory, "students")
 
 @pytest.fixture(scope="module")
 def writer(request_factory):

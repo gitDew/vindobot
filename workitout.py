@@ -19,12 +19,15 @@ class Fetcher:
     def fetch(self):
         r = requests.get(self.url, cookies=self.cookies)
         fetched = [{v: e[k] for k, v in self.TO_KEYS.items()} for e in r.json()]
-        return self._replace_zero_date_with_empty_string(fetched)
+        return self._clean_blocked_date(fetched)
 
-    def _replace_zero_date_with_empty_string(self, fetched):
+    def _clean_blocked_date(self, fetched):
         for student in fetched:
             if student["BlockedTill"] == "0000-00-00 00:00:00":
                 student["BlockedTill"] = ""
+            else:
+                y, m, d = student["BlockedTill"].split()[0].split('-')
+                student["BlockedTill"] = f"{d}.{m}.{y}"
         return fetched
 
 class Authenticator:

@@ -80,15 +80,16 @@ class Reader:
 class Writer:
     TABLE_AT = "A1"
 
-    def __init__(self, request_factory):
+    def __init__(self, request_factory, sheet_name):
         self.request_factory = request_factory 
+        self.sheet_name = sheet_name
         
     def update_row(self, rowID, values):
         body = {
             'values': [values] 
         }
 
-        range = "students!A" + str(rowID)
+        range = self.sheet_name + "!A" + str(rowID)
         request = self.request_factory.build_update_request(range, body)
         result = request.execute()
         print('{0} cells updated.'.format(result.get('updatedCells')))

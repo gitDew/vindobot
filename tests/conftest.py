@@ -21,7 +21,7 @@ def reader(request_factory):
 
 @pytest.fixture(scope="module")
 def writer(request_factory):
-    return google_sheets.Writer(request_factory)
+    return google_sheets.Writer(request_factory, "students")
 
 @pytest.fixture
 def paying_example_student():

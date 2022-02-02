@@ -3,7 +3,7 @@ backcall==0.2.0
 cachetools==4.2.4
 certifi==2021.10.8
 charset-normalizer==2.0.7
-chromedriver-py==95.0.4638.17
+chromedriver-py==98.0.4758.48
 decorator==5.1.0
 google-api-core==2.2.2
 google-api-python-client==2.31.0
@@ -23,7 +23,6 @@ packaging==21.3
 parso==0.8.2
 pexpect==4.8.0
 pickleshare==0.7.5
-pkg-resources==0.0.0
 pluggy==1.0.0
 prompt-toolkit==3.0.22
 protobuf==3.19.1
@@ -47,6 +46,6 @@ traitlets==4.3.3
 typing-extensions==4.0.0
 uritemplate==4.1.1
 urllib3==1.26.7
--e git+git@github.com:gitDew/vindobot.git@2c0d976aaf758e0f4e1d611b5279d26627c7bf92#egg=vindobot
+-e git+git@github.com:gitDew/vindobot.git@d930fb0bcbc42fcde602311be75f7b46b961022d#egg=vindobot
 wcwidth==0.2.5
 zipp==3.6.0

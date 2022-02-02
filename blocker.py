@@ -17,6 +17,6 @@ class Blocker:
         uncertain_students = [student for student in self.students if student.is_uncertain() and not student.is_blocked()]
 
         if len(uncertain_students) != 0:
-            outfile.write("UNCERTAIN:\n")
+            outfile.write("NEW/UNCERTAIN:\n")
             for us in uncertain_students:
                 outfile.write(str(us))

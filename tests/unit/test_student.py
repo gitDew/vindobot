@@ -27,6 +27,12 @@ def test_is_expired(expired_but_not_blocked_example_student, paying_example_stud
         assert expired_but_not_blocked_example_student.is_expired()
         assert not paying_example_student.is_expired()
 
+def test_expired_for(expired_but_not_blocked_example_student):
+    with patch('student.date') as mock_date:
+        # assuming today is the 10th of February 2021
+        mock_date.today.return_value = date(year=2021, month=2, day=10)
+        assert expired_but_not_blocked_example_student.expired_for() == 5
+
 def test_uncertain(uncertain_example_student):
     assert not uncertain_example_student.is_blocked(), "Empty BlockedTill should not be seen as blocked"
     assert not uncertain_example_student.is_expired(), "Empty to fields should not be seen as expired"

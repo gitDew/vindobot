@@ -35,6 +35,7 @@ def blocked_example_student():
             "RoomNr": "666", "BlockedTill": "01.12.2021", "From": "01.01.2021", "To": "01.02.2021", "Comment": ""}
     return Student(student_entry)
 
+
 @pytest.fixture
 def expired_but_not_blocked_example_student():
     student_entry = {"RowID": 11, "StammNr": "123458", "FirstName": "Sneaky", "LastName": "Man", 
@@ -51,4 +52,10 @@ def uncertain_example_student():
 def uncertain_blocked_example_student():
     student_entry = {"RowID": 12, "StammNr": "123459", "FirstName": "Johnny", "LastName": "Uncertain", 
             "RoomNr": "", "BlockedTill": "01.12.2021", "From": "", "To": "", "Comment": "?"}
+    return Student(student_entry)
+
+@pytest.fixture
+def expired_but_very_not_blocked_example_student():
+    student_entry = {"RowID": 13, "StammNr": "123460", "FirstName": "Sneakier", "LastName": "Man", 
+            "RoomNr": "670", "BlockedTill": "", "From": "01.01.2018", "To": "05.02.2019", "Comment": "sneakiest guy I know"}
     return Student(student_entry)

@@ -8,6 +8,7 @@ class Blocker:
             return
         
         expired_students = [student for student in self.students if student.is_expired() and not student.is_blocked()]
+        expired_students.sort(key=lambda student: student.expired_for(), reverse=True)
 
         if len(expired_students) != 0:
             outfile.write("EXPIRED:\n")

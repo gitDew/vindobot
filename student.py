@@ -37,6 +37,8 @@ class Student:
             s += f" Paid until {self.paid_to.strftime('%d.%m.%Y')}."
         else:
             s += " Paid until ?."
+        if self.is_expired():
+            s += f" Expired for {self.expired_for()} days."
         if self.comment != "":
             s += f" Comment: {self.comment}"
         return s + '\n'
@@ -46,6 +48,9 @@ class Student:
 
     def is_expired(self):
         return self.paid_to != "" and self.paid_to <= date.today()
+
+    def expired_for(self):
+        return (date.today() - self.paid_to).days
 
     def is_uncertain(self):
         return self.paid_to == ""

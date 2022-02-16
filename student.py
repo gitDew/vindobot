@@ -44,7 +44,7 @@ class Student:
         return s + '\n'
 
     def is_blocked(self):
-        return self.blocked_till != ""
+        return self.blocked_till != "" and self.blocked_till > date.today()
 
     def is_expired(self):
         return self.paid_to != "" and self.paid_to <= date.today()

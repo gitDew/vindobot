@@ -26,7 +26,6 @@ def test_given_expired_student_appears_in_block_list(expired_but_not_blocked_exa
 
     blocker = Blocker(students)
 
-    blocker.write_block_list_to_file(outfile)
     with patch('student.date') as mock_date:
         # assuming today is the 10th of February 2021
         mock_date.today.return_value = date(year=2021, month=2, day=10)
@@ -105,7 +104,10 @@ def test_given_blocked_does_not_appear(blocked_example_student, outfile):
 
     blocker = Blocker(students)
 
-    blocker.write_block_list_to_file(outfile)
+    with patch('student.date') as mock_date:
+        # assuming today is the 10th of February 2021
+        mock_date.today.return_value = date(year=2021, month=2, day=10)
+        blocker.write_block_list_to_file(outfile)
 
     value = outfile.getvalue()
 
@@ -115,7 +117,24 @@ def test_given_uncertain_but_blocked_does_not_appear(uncertain_blocked_example_s
     students = [uncertain_blocked_example_student]
 
     blocker = Blocker(students)
-    blocker.write_block_list_to_file(outfile)
+    with patch('student.date') as mock_date:
+        # assuming today is the 10th of February 2021
+        mock_date.today.return_value = date(year=2021, month=2, day=10)
+        blocker.write_block_list_to_file(outfile)
     value = outfile.getvalue()
 
     assert value == ""
+
+def test_given_blocked_but_blocking_expired_does_appear(blocked_example_student, outfile):
+    students = [blocked_example_student]
+
+    blocker = Blocker(students)
+
+    with patch('student.date') as mock_date:
+        # assuming today is the 1st of January 2022
+        mock_date.today.return_value = date(year=2022, month=1, day=1)
+        blocker.write_block_list_to_file(outfile)
+
+    value = outfile.getvalue()
+
+    assert value == "EXPIRED:\n123457, Bad, Man, Room 666. Paid until 01.02.2021. Expired for 334 days.\n"

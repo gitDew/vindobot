@@ -17,7 +17,10 @@ def test_converting_entries_to_students(example_students):
 
     assert len(example_students) == 195     # 195 entries in test sheet
     
-    blocked_students = [student for student in example_students if student.is_blocked()]
+    with patch('student.date') as mock_date:
+        # assuming it's 2015
+        mock_date.today.return_value = date(year=2015, month=1, day=10)
+        blocked_students = [student for student in example_students if student.is_blocked()]
     assert len(blocked_students) == 18  # 18 blocked students in test sheet
 
 def test_given_everyone_expired_or_uncertain(example_students):

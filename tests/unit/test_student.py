@@ -18,7 +18,10 @@ def test_given_student_who_paid_should_not_be_blocked(paying_example_student):
     assert not paying_example_student.is_blocked()
 
 def test_blocked_student_should_be_blocked(blocked_example_student):
-    assert blocked_example_student.is_blocked()
+    with patch('student.date') as mock_date:
+        # assuming today is the 10th of February 2021
+        mock_date.today.return_value = date(year=2021, month=2, day=10)
+        assert blocked_example_student.is_blocked()
 
 def test_is_expired(expired_but_not_blocked_example_student, paying_example_student):
     with patch('student.date') as mock_date:

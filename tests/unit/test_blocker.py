@@ -84,7 +84,7 @@ def test_given_uncertain_student_only_uncertain_appears(uncertain_example_studen
 
     value = outfile.getvalue()
     
-    assert value == "UNCERTAIN:\n123459, Johnny, Uncertain, Room ?. Paid until ?. Comment: ?\n"
+    assert value == "NEW/UNCERTAIN:\n123459, Johnny, Uncertain, Room ?. Paid until ?. Comment: ?\n"
 
 def test_given_expired_and_uncertain_both_appear(expired_but_not_blocked_example_student, uncertain_example_student, outfile):
     students = [expired_but_not_blocked_example_student, uncertain_example_student]
